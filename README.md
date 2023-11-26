@@ -1,6 +1,6 @@
 # React Native Calculator
 
-This React Native calculator app provides a simple interface for performing basic arithmetic operations. It is built on the foundation of the tutorial available at [https://github.com/SuperspyderPF/React-Native-Calculator-](https://github.com/SuperspyderPF/React-Native-Calculator-).
+This React Native calculator app provides a simple interface for performing basic arithmetic operations.
 
 ## Usage
 
