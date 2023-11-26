@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-import math from 'mathjs';
+import math from 'mathjs'; 
 
 export default function App() {
   const [result, setResult] = useState('');
@@ -23,18 +23,25 @@ export default function App() {
 
   const handleResult = () => {
     try {
-      const res = math.evaluate(expression);
-      const roundedResult = res.toFixed(2);
-      setResult(roundedResult);
-      const historyItem = `${expression} = ${roundedResult}`;
-      setExpression('');
-      setHistory([...history, historyItem]);
+      
+      console.log( expression)
+      const res = eval(expression); 
+    
+      if (isNaN(res)) {
+        setResult('Error: Result is not a number');
+      } else {
+        const roundedResult = res.toFixed(2);
+        setResult(roundedResult);
+        const historyItem = `${expression} = ${roundedResult}`;
+        setExpression('');
+        setHistory([...history, historyItem]);
+      }
     } catch (error) {
-      setResult('Error');
+      setResult('Error: Invalid expression');
+      console.error('Evaluation error:', error);
     }
   };
-
-
+  
   const handleClear = () => {
     setResult('');
     setExpression('');
