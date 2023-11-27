@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import math from 'mathjs'; 
+import RNFS from 'react-native-fs';
 
 export default function App() {
   const [result, setResult] = useState('');
@@ -50,10 +51,12 @@ export default function App() {
   const toggleHistory = () => {
     setHistoryVisible(!historyVisible);
   };
+  
 
   const renderHistoryItem = ({ item }) => (
     <Text style={styles.historyItem}>{item}</Text>
   );
+  
   const styles = StyleSheet.create({
     container: {
       flex: 1,
