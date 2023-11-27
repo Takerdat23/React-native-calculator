@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import math from 'mathjs'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [result, setResult] = useState('');
@@ -8,6 +9,11 @@ export default function App() {
   const [history, setHistory] = useState([]);
 
   const [historyVisible, setHistoryVisible] = useState(false);
+
+  useEffect(() => {
+    // Load history from AsyncStorage when the component mounts
+    loadHistory();
+  }, []); 
 
   const handleNum = (input) => {
     setExpression(expression + input);
@@ -35,6 +41,9 @@ export default function App() {
         const historyItem = `${expression} = ${roundedResult}`;
         setExpression('');
         setHistory([...history, historyItem]);
+
+        // Save history to AsyncStorage
+        saveHistory([...history, historyItem]);
       }
     } catch (error) {
       setResult('Error: Invalid expression');
@@ -50,10 +59,31 @@ export default function App() {
   const toggleHistory = () => {
     setHistoryVisible(!historyVisible);
   };
+  
 
   const renderHistoryItem = ({ item }) => (
     <Text style={styles.historyItem}>{item}</Text>
   );
+
+  const loadHistory = async () => {
+    try {
+      const storedHistory = await AsyncStorage.getItem('calculator_history');
+      if (storedHistory !== null) {
+        setHistory(JSON.parse(storedHistory));
+      }
+    } catch (error) {
+      console.error('Error loading history:', error);
+    }
+  };
+
+  const saveHistory = async (newHistory) => {
+    try {
+      await AsyncStorage.setItem('calculator_history', JSON.stringify(newHistory));
+    } catch (error) {
+      console.error('Error saving history:', error);
+    }
+  };
+  
   const styles = StyleSheet.create({
     container: {
       flex: 1,
